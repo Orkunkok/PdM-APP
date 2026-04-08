@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMAPSS Engine Explorer</title>
+  <style>
+    :root{
+      --bg:#f4f6f9;
+      --card:#ffffff;
+      --ink:#17202a;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --brand:#34495e;
+      --accent:#2563eb;
+      --ok:#e8f7ee;
+      --warn:#fff7db;
+      --bad:#fde8e8;
+      --shadow:0 8px 24px rgba(15,23,42,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; padding:24px;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink); background:var(--bg);
+    }
+    .app{
+      max-width:1400px; margin:0 auto;
+      display:grid; grid-template-columns:320px 1fr; gap:20px;
+    }
+    .sidebar, .main-card, .plot-card, .table-card, .metric-card{
+      background:var(--card); border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .sidebar{padding:20px; position:sticky; top:20px; height:fit-content}
+    .brand{font-size:28px; font-weight:800; margin:0 0 4px}
+    .sub{font-size:14px; color:var(--muted); margin:0 0 20px}
+    .nav-link{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:10px 14px;border-radius:999px;background:#eef2ff;color:#1f3a5f;text-decoration:none;font-weight:700;font-size:13px;}
+    .nav-link:hover{background:#e0e7ff}
+    .control{margin-bottom:16px}
+    .control label{display:block; font-size:13px; font-weight:700; margin-bottom:8px}
+    .control select, .control input{
+      width:100%; padding:12px 14px; border:1px solid var(--line);
+      border-radius:12px; background:#fff; font-size:14px;
+    }
+    .hint{
+      font-size:12px; color:var(--muted); line-height:1.5; margin-top:14px;
+      background:#f8fafc; border:1px dashed var(--line); border-radius:12px; padding:12px;
+    }
+    .content{display:grid; gap:20px}
+    .main-card{padding:22px}
+    .topline{
+      display:flex; justify-content:space-between; gap:16px; align-items:start; flex-wrap:wrap;
+    }
+    .title-wrap h1{margin:0; font-size:28px}
+    .title-wrap p{margin:6px 0 0; color:var(--muted)}
+    .status{
+      padding:10px 14px; border-radius:999px; font-weight:700; font-size:13px; white-space:nowrap;
+      border:1px solid var(--line);
+    }
+    .status.ok{background:var(--ok); color:#166534}
+    .status.warn{background:var(--warn); color:#92400e}
+    .status.bad{background:var(--bad); color:#991b1b}
+    .metrics{
+      margin-top:18px;
+      display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:14px;
+    }
+    .metric-card{padding:16px}
+    .metric-label{font-size:12px; color:var(--muted); margin-bottom:8px}
+    .metric-value{font-size:24px; font-weight:800}
+    .metric-note{font-size:12px; color:var(--muted); margin-top:4px}
+    .grid-2{display:grid; grid-template-columns:1fr; gap:20px}
+    .plot-card, .table-card{padding:18px}
+    .card-head{
+      display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:12px;
+    }
+    .card-head h2{margin:0; font-size:18px}
+    .chip{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      background:#eff6ff; color:#1d4ed8; font-weight:700;
+    }
+    .plot-frame{
+    width:100%;
+    min-height:420px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+    background:#fbfdff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px;
+    }
+
+    .plot-frame img{
+    width:100%;
+    height:100%;
+    max-height:420px;
+    object-fit:contain;
+    display:block;
+    }
+    .plot-card.full-width{grid-column:1 / -1}
+    .plot-card.full-width .plot-frame img{max-height:520px}
+    .empty{
+      text-align:center; padding:30px; color:var(--muted); font-size:14px; line-height:1.6;
+    }
+    table{width:100%; border-collapse:collapse}
+    th,td{padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; font-size:14px}
+    th{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted)}
+    .mono{font-variant-numeric:tabular-nums}
+    .footer-note{
+      color:var(--muted); font-size:12px; line-height:1.5; margin-top:14px;
+    }
+    @media (max-width:1100px){
+      .app{grid-template-columns:1fr}
+      .sidebar{position:static}
+      .metrics{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .grid-2{grid-template-columns:1fr}
+    }
+    @media (max-width:700px){
+      body{padding:14px}
+      .metrics{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">CMAPSS Engine Explorer</div>
+      <p class="sub">App-style dashboard for per-engine predictive maintenance review</p>
+
+      <div class="control">
+        <label for="datasetSelect">Dataset</label>
+        <select id="datasetSelect"></select>
+      </div>
+
+      <div class="control">
+        <label for="engineSelect">Engine ID</label>
+        <select id="engineSelect"></select>
+      </div>
+
+      <div class="control">
+        <label for="searchEngine">Jump to engine</label>
+        <input id="searchEngine" type="number" min="1" step="1" placeholder="Type engine number" />
+      </div>
+
+      <div class="hint">
+        This page reads one manifest per dataset: FD001, FD002, FD003, FD004. Each engine entry can contain summary values, alert timing info, and image paths or base64 images for the probability curve, old vs new target window, and fault triggering plot.
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="main-card">
+        <div class="topline">
+          <div class="title-wrap">
+            <h1 id="engineTitle">Engine —</h1>
+            <p id="engineSubtitle">Load a dataset manifest to explore engine-level outputs.</p>
+          </div>
+          <div id="statusBadge" class="status">No data</div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric-card">
+            <div class="metric-label">True Alert Cycle</div>
+            <div class="metric-value mono" id="trueAlert">—</div>
+            <div class="metric-note">First cycle where true warning begins</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Predicted Alert Cycle</div>
+            <div class="metric-value mono" id="predAlert">—</div>
+            <div class="metric-note">First cycle flagged by the model</div>
+          </div>
+          <div class="metric-card">
+              <div class="metric-label">10% Threshold</div>
+              <div class="metric-value mono" id="thresholdCycle">—</div>
+              <div class="metric-note">10% of true alert cycle</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Delta</div>
+            <div class="metric-value mono" id="deltaCycle">—</div>
+            <div class="metric-note">Predicted − true alert cycle</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Within Tolerance</div>
+            <div class="metric-value" id="withinTol">—</div>
+            <div class="metric-note">Based on per-engine tolerance window</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="plot-card">
+          <div class="card-head">
+            <h2>Probability Curve</h2>
+            <div class="chip" id="probChip">engine-level</div>
+          </div>
+          <div class="plot-frame" id="probabilityPlot"></div>
+        </div>
+
+        <div class="plot-card">
+          <div class="card-head">
+            <h2>Old vs New Target Window</h2>
+            <div class="chip">labels</div>
+          </div>
+          <div class="plot-frame" id="labelPlot"></div>
+        </div>
+      </div>
+
+      <div class="plot-card full-width">
+        <div class="card-head">
+          <h2>Fault Triggering</h2>
+          <div class="chip" id="triggerChip">rule-based alert</div>
+        </div>
+        <div class="plot-frame" id="triggerPlot"></div>
+      </div>
+
+      <div class="table-card">
+        <div class="card-head">
+          <h2>Engine Details</h2>
+          <div class="chip" id="modelChip">best model</div>
+        </div>
+        <table>
+          <tbody id="detailTable"></tbody>
+        </table>
+        <div class="footer-note" id="footerNote"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    /*
+      HOW TO USE
+      ----------
+      1) Export a manifest JSON file from the notebook.
+      2) Put the JSON next to this HTML file.
+      3) Update MANIFEST_URL below.
+
+      Expected manifest shape:
+      {
+        "datasets": {
+          "FD001": {
+            "meta": {
+              "best_model": "MLP",
+              "best_norm": "MinMax",
+              "source": "Hold-out",
+              "threshold": 0.5,
+              "smooth_w": 7,
+              "k": 1,
+              "rul_threshold": 30
+            },
+            "engines": {
+              "1": {
+                "true_alert_cycle": 97,
+                "predicted_alert_cycle": 95,
+                "detection_cycle": 95,
+                "delta_cycles": -2,
+                "tol_cycles": 10,
+                "within_tolerance": true,
+                "instance_tag": "long_life",
+                "max_cycle": 192,
+                "plot_probability": "slide_figs(FD001)/timeline_engine_1.png",
+                "plot_labels": "slide_figs(FD001)/labels_engine_1.png",
+                "plot_trigger": "slide_figs(FD001)/trigger_engine_1.png",
+                "notes": "Best combo from hold-out summary."
+              }
+            }
+          }
+        }
+      }
+    */
+    const MANIFEST_URLS = {
+      FD001: "fd001_engine_manifest.json",
+      FD002: "fd002_engine_manifest.json",
+      FD003: "fd003_engine_manifest.json",
+      FD004: "fd004_engine_manifest.json"
+    };
+
+    let manifest = null;
+
+    const datasetSelect = document.getElementById("datasetSelect");
+    const engineSelect = document.getElementById("engineSelect");
+    const searchEngine = document.getElementById("searchEngine");
+
+    const engineTitle = document.getElementById("engineTitle");
+    const engineSubtitle = document.getElementById("engineSubtitle");
+    const statusBadge = document.getElementById("statusBadge");
+
+    const trueAlert = document.getElementById("trueAlert");
+    const predAlert = document.getElementById("predAlert");
+    const thresholdCycle = document.getElementById("thresholdCycle");
+    const deltaCycle = document.getElementById("deltaCycle");
+    const withinTol = document.getElementById("withinTol");
+
+    const probabilityPlot = document.getElementById("probabilityPlot");
+    const labelPlot = document.getElementById("labelPlot");
+    const triggerPlot = document.getElementById("triggerPlot");
+
+    const detailTable = document.getElementById("detailTable");
+    const footerNote = document.getElementById("footerNote");
+
+    const probChip = document.getElementById("probChip");
+    const triggerChip = document.getElementById("triggerChip");
+    const modelChip = document.getElementById("modelChip");
+
+    function singleDatasetFallback(datasetName){
+      const defaults = {
+        FD001: { model: "MLP", norm: "MinMax" },
+        FD002: { model: "Random Forest", norm: "Z-Score" },
+        FD003: { model: "Random Forest", norm: "Z-Score" },
+        FD004: { model: "Random Forest", norm: "Z-Score" }
+      };
+      const pick = defaults[datasetName] || { model: "—", norm: "—" };
+      return {
+        datasets: {
+          [datasetName]: {
+            meta: {
+              best_model: pick.model,
+              best_norm: pick.norm,
+              source: "Manifest missing",
+              threshold: 0.5,
+              smooth_w: 1,
+              k: 1,
+              rul_threshold: 30
+            },
+            engines: {
+              "1": {
+                true_alert_cycle: null,
+                predicted_alert_cycle: null,
+                detection_cycle: null,
+                delta_cycles: null,
+                tol_cycles: null,
+                within_tolerance: null,
+                instance_tag: "demo",
+                max_cycle: null,
+                plot_probability: null,
+                plot_labels: null,
+                plot_trigger: null,
+                notes: `No manifest found for ${datasetName}. Export ${datasetName.toLowerCase()}_engine_manifest.json from the notebook.`
+              }
+            }
+          }
+        }
+      };
+    }
+
+    async function loadAllManifests(){
+      const merged = { datasets: {} };
+      for (const [datasetName, url] of Object.entries(MANIFEST_URLS)) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error(`Manifest fetch failed for ${datasetName}`);
+          const data = await res.json();
+          if (data && data.datasets && data.datasets[datasetName]) {
+            merged.datasets[datasetName] = data.datasets[datasetName];
+          } else if (data && data.datasets) {
+            Object.assign(merged.datasets, data.datasets);
+          } else {
+            merged.datasets[datasetName] = singleDatasetFallback(datasetName).datasets[datasetName];
+          }
+        } catch (err) {
+          console.warn(`Using fallback manifest for ${datasetName}:`, err);
+          merged.datasets[datasetName] = singleDatasetFallback(datasetName).datasets[datasetName];
+        }
+      }
+      return merged;
+    }
+
+    function getDatasetKeys(){
+      return Object.keys(manifest.datasets || {});
+    }
+
+    function getSelectedDataset(){
+      return datasetSelect.value;
+    }
+
+    function getSelectedEngineKey(){
+      return engineSelect.value;
+    }
+
+    function getCurrentDataset(){
+      return manifest.datasets[getSelectedDataset()];
+    }
+
+    function getCurrentEngine(){
+      const ds = getCurrentDataset();
+      return ds.engines[getSelectedEngineKey()];
+    }
+
+    function formatVal(v){
+      if (v === null || v === undefined || v === "" || Number.isNaN(v)) return "—";
+      return String(v);
+    }
+
+    function statusClass(engine){
+      if (engine.within_tolerance === true) return "ok";
+      if (engine.predicted_alert_cycle == null) return "bad";
+      return "warn";
+    }
+
+    function statusText(engine){
+      if (engine.within_tolerance === true) return "Within tolerance";
+      if (engine.predicted_alert_cycle == null) return "No prediction";
+      return "Outside tolerance";
+    }
+
+    function renderImage(container, src, alt){
+      if (!src){
+        container.innerHTML = `<div class="empty">No image exported yet for this engine.<br>Generate the per-engine figure in the notebook and add its path to the manifest.</div>`;
+        return;
+      }
+      const isBase64 = src.startsWith("data:image");
+      const normalized = isBase64 ? src : src;
+      container.innerHTML = `<img src="${normalized}" alt="${alt}" />`;
+    }
+
+    function buildDetails(meta, engine){
+      const rows = [
+        ["Dataset", getSelectedDataset()],
+        ["Best normalization", meta.best_norm],
+        ["Best model", meta.best_model],
+        ["Validation source", meta.source],
+        ["Probability threshold T", meta.threshold],
+        ["Persistence K", meta.k],
+        ["Smoothing window", meta.smooth_w],
+        ["RUL threshold", meta.rul_threshold],
+        ["Instance tag", engine.instance_tag],
+        ["Max cycle", engine.max_cycle],
+        ["Tolerance cycles", engine.tol_cycles],
+        ["Notes", engine.notes]
+      ];
+      detailTable.innerHTML = rows.map(([k,v]) => `
+        <tr>
+          <th>${k}</th>
+          <td class="${typeof v === 'number' ? 'mono' : ''}">${formatVal(v)}</td>
+        </tr>
+      `).join("");
+    }
+
+    function populateDatasets(){
+      const keys = getDatasetKeys();
+      datasetSelect.innerHTML = keys.map(k => `<option value="${k}">${k}</option>`).join("");
+    }
+
+    function populateEngines(preferredEngine = null){
+      const ds = getCurrentDataset();
+      const engineKeys = Object.keys(ds.engines).sort((a,b) => Number(a) - Number(b));
+      engineSelect.innerHTML = engineKeys.map(k => `<option value="${k}">Engine ${k}</option>`).join("");
+      if (preferredEngine && engineKeys.includes(String(preferredEngine))) {
+        engineSelect.value = String(preferredEngine);
+      }
+    }
+
+    function render(){
+      const ds = getCurrentDataset();
+      const engine = getCurrentEngine();
+      const meta = ds.meta || {};
+      const trueCycleNum = Number(engine.true_alert_cycle);
+      const thresholdVal =
+            Number.isFinite(trueCycleNum) ? Math.round(trueCycleNum * 0.10) : null;
+
+      engineTitle.textContent = `Engine ${getSelectedEngineKey()} — ${getSelectedDataset()}`;
+      engineSubtitle.textContent = `Per-engine predictive maintenance view with exported notebook visuals.`;
+
+      statusBadge.textContent = statusText(engine);
+      statusBadge.className = `status ${statusClass(engine)}`;
+
+      trueAlert.textContent = formatVal(engine.true_alert_cycle);
+      predAlert.textContent = formatVal(engine.predicted_alert_cycle);
+      thresholdCycle.textContent = formatVal(thresholdVal);
+      deltaCycle.textContent = formatVal(engine.delta_cycles);
+      withinTol.textContent = engine.within_tolerance === true ? "Yes" : (engine.within_tolerance === false ? "No" : "—");
+
+      probChip.textContent = `T=${formatVal(meta.threshold)} · smooth=${formatVal(meta.smooth_w)}`;
+      triggerChip.textContent = `K=${formatVal(meta.k)}`;
+      modelChip.textContent = `${formatVal(meta.best_norm)} + ${formatVal(meta.best_model)}`;
+
+      renderImage(probabilityPlot, engine.plot_probability, "Probability curve");
+      renderImage(labelPlot, engine.plot_labels, "Old vs new target window");
+      renderImage(triggerPlot, engine.plot_trigger, "Fault triggering plot");
+
+      buildDetails(meta, engine);
+
+      footerNote.textContent =
+        "This app is intentionally data-driven: once you export the per-engine manifest from the notebook, the same UI can be reused for FD001–FD004.";
+    }
+
+    datasetSelect.addEventListener("change", () => {
+      populateEngines();
+      render();
+    });
+
+    engineSelect.addEventListener("change", render);
+
+    searchEngine.addEventListener("change", () => {
+      const value = String(searchEngine.value || "");
+      const ds = getCurrentDataset();
+      if (ds.engines[value]) {
+        engineSelect.value = value;
+        render();
+      }
+    });
+
+    async function init(){
+      manifest = await loadAllManifests();
+      populateDatasets();
+      populateEngines();
+      render();
+    }
+
+    init();
+  </script>
+</body>
+</html>
