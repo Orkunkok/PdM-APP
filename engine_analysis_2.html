@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CMAPSS Engine Explorer</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root{
+      --bg:#f4f6f9;
+      --card:#ffffff;
+      --ink:#17202a;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --brand:#34495e;
+      --accent:#2563eb;
+      --ok:#e8f7ee;
+      --warn:#fff7db;
+      --bad:#fde8e8;
+      --shadow:0 8px 24px rgba(15,23,42,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; padding:24px;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink); background:var(--bg);
+    }
+    .app{
+      max-width:1400px; margin:0 auto;
+      display:grid; grid-template-columns:320px 1fr; gap:20px;
+    }
+    .sidebar, .main-card, .plot-card, .table-card, .metric-card{
+      background:var(--card); border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .sidebar{padding:20px; position:sticky; top:20px; height:fit-content}
+    .brand{font-size:28px; font-weight:800; margin:0 0 4px}
+    .sub{font-size:14px; color:var(--muted); margin:0 0 20px}
+    .control{margin-bottom:16px}
+    .control label{display:block; font-size:13px; font-weight:700; margin-bottom:8px}
+    .control select, .control input{
+      width:100%; padding:12px 14px; border:1px solid var(--line);
+      border-radius:12px; background:#fff; font-size:14px;
+    }
+    .content{display:grid; gap:20px}
+    .main-card{padding:22px}
+    .topline{
+      display:flex; justify-content:space-between; gap:16px; align-items:start; flex-wrap:wrap;
+    }
+    .title-wrap h1{margin:0; font-size:28px}
+    .title-wrap p{margin:6px 0 0; color:var(--muted)}
+    .status{
+      padding:10px 14px; border-radius:999px; font-weight:700; font-size:13px; white-space:nowrap;
+      border:1px solid var(--line);
+    }
+    .status.ok{background:var(--ok); color:#166534}
+    .status.warn{background:var(--warn); color:#92400e}
+    .status.bad{background:var(--bad); color:#991b1b}
+    .metrics{
+      margin-top:18px;
+      display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:14px;
+    }
+    .metric-card{padding:16px}
+    .metric-label{font-size:12px; color:var(--muted); margin-bottom:8px}
+    .metric-value{font-size:24px; font-weight:800}
+    .metric-note{font-size:12px; color:var(--muted); margin-top:4px}
+    .grid-2{display:grid; grid-template-columns:1fr; gap:20px}
+    .plot-card, .table-card{padding:18px}
+    .card-head{
+      display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:12px;
+    }
+    .card-head h2{margin:0; font-size:18px}
+    .chip{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      background:#eff6ff; color:#1d4ed8; font-weight:700;
+    }
+    .plot-frame{
+      width:100%;
+      height:420px;
+      min-height:420px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      overflow:hidden;
+      background:#fbfdff;
+      position:relative;
+      display:block;
+      padding:0;
+    }
+    .plot-card.full-width{grid-column:1 / -1}
+    .plot-card.full-width .plot-frame{
+      height:520px;
+      min-height:520px;
+    }
+    .plot-frame .plot-container,
+    .plot-frame .svg-container,
+    .plot-frame .js-plotly-plot,
+    .plot-frame .plotly,
+    .plot-frame .plotly-graph-div{
+      width:100% !important;
+      height:100% !important;
+    }
+    .empty{
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:30px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+    }
+    table{width:100%; border-collapse:collapse}
+    th,td{padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; font-size:14px}
+    th{font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted)}
+    .mono{font-variant-numeric:tabular-nums}
+    .footer-note{
+      color:var(--muted); font-size:12px; line-height:1.5; margin-top:14px;
+    }
+    @media (max-width:1100px){
+      .app{grid-template-columns:1fr}
+      .sidebar{position:static}
+      .metrics{grid-template-columns:repeat(2, minmax(0,1fr))}
+      .grid-2{grid-template-columns:1fr}
+    }
+    @media (max-width:700px){
+      body{padding:14px}
+      .metrics{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">CMAPSS Engine Explorer</div>
+      <p class="sub">Interactive per-engine predictive maintenance dashboard</p>
+
+      <div class="control">
+        <label for="datasetSelect">Dataset</label>
+        <select id="datasetSelect"></select>
+      </div>
+
+      <div class="control">
+        <label for="engineSelect">Engine ID</label>
+        <select id="engineSelect"></select>
+      </div>
+
+      <div class="control">
+        <label for="searchEngine">Jump to engine</label>
+        <input id="searchEngine" type="number" min="1" step="1" placeholder="Type engine number" />
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="main-card">
+        <div class="topline">
+          <div class="title-wrap">
+            <h1 id="engineTitle">Engine —</h1>
+          </div>
+          <div id="statusBadge" class="status">No data</div>
+        </div>
+
+        <div class="metrics">
+          <div class="metric-card">
+            <div class="metric-label">True Alert Cycle</div>
+            <div class="metric-value mono" id="trueAlert">—</div>
+            <div class="metric-note">First cycle where true warning begins</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Predicted Alert Cycle</div>
+            <div class="metric-value mono" id="predAlert">—</div>
+            <div class="metric-note">First cycle flagged by the model</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">10% Threshold</div>
+            <div class="metric-value mono" id="thresholdCycle">—</div>
+            <div class="metric-note">10% of true alert cycle</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Delta</div>
+            <div class="metric-value mono" id="deltaCycle">—</div>
+            <div class="metric-note">Predicted − true alert cycle</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Within Tolerance</div>
+            <div class="metric-value" id="withinTol">—</div>
+            <div class="metric-note">Based on per-engine tolerance window</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="plot-card">
+          <div class="card-head">
+            <h2>Probability Curve</h2>
+            <div class="chip" id="probChip">interactive</div>
+          </div>
+          <div class="plot-frame" id="probabilityPlot"></div>
+        </div>
+
+        <div class="plot-card">
+          <div class="card-head">
+            <h2>Old vs New Target Window</h2>
+          </div>
+          <div class="plot-frame" id="labelPlot"></div>
+        </div>
+      </div>
+
+      <div class="plot-card full-width">
+        <div class="card-head">
+          <h2>Fault Triggering</h2>
+          <div class="chip" id="triggerChip">interactive</div>
+        </div>
+        <div class="plot-frame" id="triggerPlot"></div>
+      </div>
+
+      <div class="table-card">
+        <div class="card-head">
+          <h2>Engine Details</h2>
+          <div class="chip" id="modelChip">best model</div>
+        </div>
+        <table>
+          <tbody id="detailTable"></tbody>
+        </table>
+        <div class="footer-note" id="footerNote"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const MANIFEST_URLS = {
+      FD001: "app_data_fd001/manifest_fd001_interactive.json",
+      FD002: "app_data_fd002/manifest_fd002_interactive.json",
+      FD003: "app_data_fd003/manifest_fd003_interactive.json",
+      FD004: "app_data_fd004/manifest_fd004_interactive.json"
+    };
+
+    let manifest = null;
+    const interactiveCache = new Map();
+    let renderToken = 0;
+
+    const datasetSelect = document.getElementById("datasetSelect");
+    const engineSelect = document.getElementById("engineSelect");
+    const searchEngine = document.getElementById("searchEngine");
+
+    const engineTitle = document.getElementById("engineTitle");
+    const engineSubtitle = document.getElementById("engineSubtitle");
+    const statusBadge = document.getElementById("statusBadge");
+
+    const trueAlert = document.getElementById("trueAlert");
+    const predAlert = document.getElementById("predAlert");
+    const thresholdCycle = document.getElementById("thresholdCycle");
+    const deltaCycle = document.getElementById("deltaCycle");
+    const withinTol = document.getElementById("withinTol");
+
+    const probabilityPlot = document.getElementById("probabilityPlot");
+    const labelPlot = document.getElementById("labelPlot");
+    const triggerPlot = document.getElementById("triggerPlot");
+
+    const detailTable = document.getElementById("detailTable");
+    const footerNote = document.getElementById("footerNote");
+
+    const probChip = document.getElementById("probChip");
+    const triggerChip = document.getElementById("triggerChip");
+    const modelChip = document.getElementById("modelChip");
+
+    function singleDatasetFallback(datasetName){
+      return {
+        datasets: {
+          [datasetName]: {
+            meta: {
+              dataset: datasetName,
+              best_model: "—",
+              best_norm: "—",
+              source: "Interactive manifest missing",
+              threshold: null,
+              smooth_w: null,
+              k: null,
+              rul_threshold: null
+            },
+            engines: {
+              "1": {
+                interactive_file: null,
+                max_cycle: null,
+                true_alert_cycle: null,
+                predicted_alert_cycle: null,
+                detection_cycle: null,
+                delta_cycles: null,
+                tol_cycles: null,
+                within_tolerance: null  
+              }
+            }
+          }
+        }
+      };
+    }
+
+    function getBaseDir(url){
+      const idx = url.lastIndexOf("/");
+      return idx === -1 ? "" : url.slice(0, idx + 1);
+    }
+
+    function isAbsolutePath(path){
+      return /^https?:\/\//i.test(path) || /^data:/i.test(path) || path.startsWith("/");
+    }
+
+    function resolveAssetPath(baseDir, path){
+      if (!path) return null;
+      if (isAbsolutePath(path)) return path;
+      return `${baseDir}${path}`;
+    }
+
+    function normalizeInteractiveManifest(datasetName, data, baseDir){
+      const dsName = (data.meta && data.meta.dataset) || datasetName;
+      const engines = {};
+      for (const [engineId, engine] of Object.entries(data.engines || {})) {
+        engines[String(engineId)] = {
+          interactive_file: resolveAssetPath(baseDir, engine.file || engine.interactive_file),
+          max_cycle: engine.max_cycle ?? null,
+          true_alert_cycle: engine.true_alert_cycle ?? null,
+          predicted_alert_cycle: engine.predicted_alert_cycle ?? null,
+          detection_cycle: engine.detection_cycle ?? null,
+          delta_cycles: engine.delta_cycles ?? null,
+          tol_cycles: engine.tol_cycles ?? null,
+          within_tolerance: engine.within_tolerance ?? null,
+        };
+      }
+      return {
+        [dsName]: {
+          meta: { ...(data.meta || {}), dataset: dsName },
+          engines
+        }
+      };
+    }
+
+    async function loadAllManifests(){
+      const merged = { datasets: {} };
+      for (const [datasetName, url] of Object.entries(MANIFEST_URLS)) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) throw new Error(`Manifest fetch failed for ${datasetName}`);
+          const data = await res.json();
+          const baseDir = getBaseDir(url);
+
+          if (data && data.meta && data.engines) {
+            Object.assign(merged.datasets, normalizeInteractiveManifest(datasetName, data, baseDir));
+          } else {
+            merged.datasets[datasetName] = singleDatasetFallback(datasetName).datasets[datasetName];
+          }
+        } catch (err) {
+          console.warn(`Using fallback manifest for ${datasetName}:`, err);
+          merged.datasets[datasetName] = singleDatasetFallback(datasetName).datasets[datasetName];
+        }
+      }
+      return merged;
+    }
+
+    function getDatasetKeys(){
+      return Object.keys(manifest.datasets || {});
+    }
+
+    function getSelectedDataset(){
+      return datasetSelect.value;
+    }
+
+    function getSelectedEngineKey(){
+      return engineSelect.value;
+    }
+
+    function getCurrentDataset(){
+      return manifest.datasets[getSelectedDataset()];
+    }
+
+    function getCurrentEngine(){
+      const ds = getCurrentDataset();
+      return ds.engines[getSelectedEngineKey()];
+    }
+
+    function formatVal(v){
+      if (v === null || v === undefined || v === "" || Number.isNaN(v)) return "—";
+      return String(v);
+    }
+
+    function hasInteractiveFile(engine){
+      return Boolean(engine && engine.interactive_file);
+    }
+
+    function statusClass(summary, engine){
+      if (!hasInteractiveFile(engine)) return "bad";
+      if (summary.within_tolerance === true) return "ok";
+      if (summary.predicted_alert_cycle == null) return "bad";
+      return "warn";
+    }
+
+    function statusText(summary, engine){
+      if (!hasInteractiveFile(engine)) return "Interactive data missing";
+      if (summary.within_tolerance === true) return "Within tolerance";
+      if (summary.predicted_alert_cycle == null) return "No prediction";
+      return "Outside tolerance";
+    }
+
+    function resetPlotContainer(container){
+      try { Plotly.purge(container); } catch (err) {}
+      container.innerHTML = "";
+    }
+
+    function renderEmpty(container, message){
+      resetPlotContainer(container);
+      container.innerHTML = `<div class="empty">${message}</div>`;
+    }
+
+    async function fetchInteractiveData(engine){
+      const url = engine && engine.interactive_file;
+      if (!url) return null;
+      if (interactiveCache.has(url)) return interactiveCache.get(url);
+      const promise = fetch(url).then(async (res) => {
+        if (!res.ok) throw new Error(`Failed to load ${url}`);
+        return res.json();
+      });
+      interactiveCache.set(url, promise);
+      return promise;
+    }
+
+    function mergeMeta(datasetMeta, interactiveData){
+      return { ...(datasetMeta || {}), ...((interactiveData && interactiveData.meta) || {}) };
+    }
+
+    function mergeSummary(engine, interactiveData){
+      return { ...(engine || {}), ...((interactiveData && interactiveData.summary) || {}) };
+    }
+
+    function deriveHits(series, threshold){
+      if (Array.isArray(series.hit)) return series.hit;
+      return (series.probability_smooth || []).map(v => Number(v) >= Number(threshold) ? 1 : 0);
+    }
+
+    function getPlotHeight(container){
+      const frameHeight = container.clientHeight;
+      if (frameHeight && frameHeight > 100) return frameHeight;
+      return container.closest('.full-width') ? 520 : 420;
+    }
+
+    function buildPlotLayout(container, title, yaxis, shapes = []){
+      return {
+        title: { text: title, x: 0.5, xanchor: 'center' },
+        autosize: false,
+        width: Math.max(container.clientWidth || 0, 320),
+        height: getPlotHeight(container),
+        margin: { l: 60, r: 24, t: 105, b: 60 },
+        xaxis: { title: 'Cycle', automargin: true },
+        yaxis: { ...yaxis, automargin: true },
+        hovermode: 'x unified',
+        shapes,
+        paper_bgcolor: '#fbfdff',
+        plot_bgcolor: '#fbfdff',
+        legend: { orientation: 'h', y: 1.12, x: 0 }
+      };
+    }
+
+    function finalizePlot(container){
+      requestAnimationFrame(() => {
+        try { Plotly.Plots.resize(container); } catch (err) {}
+      });
+      setTimeout(() => {
+        try { Plotly.Plots.resize(container); } catch (err) {}
+      }, 120);
+    }
+
+    function renderProbabilityInteractive(container, datasetMeta, interactiveData){
+      const meta = mergeMeta(datasetMeta, interactiveData);
+      const summary = interactiveData.summary || {};
+      const s = interactiveData.series || {};
+
+      resetPlotContainer(container);
+
+      const traces = [
+        {
+          x: s.cycle || [],
+          y: s.probability_raw || [],
+          mode: "lines+markers",
+          name: "Raw probability",
+          hovertemplate: "Cycle: %{x}<br>Raw prob: %{y:.4f}<extra></extra>"
+        },
+        {
+          x: s.cycle || [],
+          y: s.probability_smooth || [],
+          mode: "lines+markers",
+          name: "Smoothed probability",
+          hovertemplate: "Cycle: %{x}<br>Smoothed prob: %{y:.4f}<extra></extra>"
+        },
+        {
+          x: s.cycle || [],
+          y: (s.cycle || []).map(() => meta.threshold),
+          mode: "lines",
+          name: "Threshold",
+          hovertemplate: "Cycle: %{x}<br>Threshold: %{y:.4f}<extra></extra>"
+        }
+      ];
+
+      const shapes = [];
+      if (summary.window_start != null && summary.window_end != null) {
+        shapes.push({
+          type: "rect",
+          x0: summary.window_start,
+          x1: summary.window_end,
+          y0: 0,
+          y1: 1,
+          yref: "paper",
+          fillcolor: "rgba(120,120,120,0.12)",
+          line: { width: 0 }
+        });
+      }
+      if (summary.true_alert_cycle != null) {
+        shapes.push({
+          type: "line",
+          x0: summary.true_alert_cycle,
+          x1: summary.true_alert_cycle,
+          y0: 0,
+          y1: 1,
+          yref: "paper",
+          line: { dash: "dot", width: 2 }
+        });
+      }
+      if (summary.predicted_alert_cycle != null) {
+        shapes.push({
+          type: "line",
+          x0: summary.predicted_alert_cycle,
+          x1: summary.predicted_alert_cycle,
+          y0: 0,
+          y1: 1,
+          yref: "paper",
+          line: { dash: "dash", width: 2 }
+        });
+      }
+
+      Plotly.newPlot(
+        container,
+        traces,
+        buildPlotLayout(container, `Probability Curve - Engine ${interactiveData.engine_id}`, { title: "Probability", range: [0, 1] }, shapes),
+        { responsive: true, displaylogo: false }
+      ).then(() => finalizePlot(container));
+    }
+
+    function renderLabelInteractive(container, interactiveData){
+      const s = interactiveData.series || {};
+      const summary = interactiveData.summary || {};
+      resetPlotContainer(container);
+
+      const traces = [
+        {
+          x: s.cycle || [],
+          y: s.old_label || [],
+          mode: "lines",
+          line: { shape: "hv" },
+          name: "warning_flag (old)",
+          hovertemplate: "Cycle: %{x}<br>Old label: %{y}<extra></extra>"
+        },
+        {
+          x: s.cycle || [],
+          y: s.new_label || [],
+          mode: "lines",
+          line: { shape: "hv" },
+          name: "target_window (new)",
+          hovertemplate: "Cycle: %{x}<br>New label: %{y}<extra></extra>"
+        }
+      ];
+
+      const shapes = [];
+      if (summary.true_alert_cycle != null) {
+        shapes.push({
+          type: "line",
+          x0: summary.true_alert_cycle,
+          x1: summary.true_alert_cycle,
+          y0: 0,
+          y1: 1,
+          line: { dash: "dot", width: 2 }
+        });
+      }
+
+      Plotly.newPlot(
+        container,
+        traces,
+        buildPlotLayout(container, `Old vs New Target Window - Engine ${interactiveData.engine_id}`, { title: "Label", range: [-0.1, 1.1], tickvals: [0, 1] }, shapes),
+        { responsive: true, displaylogo: false }
+      ).then(() => finalizePlot(container));
+    }
+
+    function renderTriggerInteractive(container, datasetMeta, interactiveData){
+      const meta = mergeMeta(datasetMeta, interactiveData);
+      const summary = interactiveData.summary || {};
+      const s = interactiveData.series || {};
+      const hits = deriveHits(s, meta.threshold);
+      const hitX = [];
+      const hitY = [];
+
+      (s.cycle || []).forEach((cycle, i) => {
+        if (hits[i] === 1) {
+          hitX.push(cycle);
+          hitY.push((s.probability_smooth || [])[i]);
+        }
+      });
+
+      resetPlotContainer(container);
+
+      const traces = [
+        {
+          x: s.cycle || [],
+          y: s.probability_smooth || [],
+          mode: "lines+markers",
+          name: "Smoothed probability",
+          hovertemplate: "Cycle: %{x}<br>Smoothed prob: %{y:.4f}<extra></extra>"
+        },
+        {
+          x: s.cycle || [],
+          y: (s.cycle || []).map(() => meta.threshold),
+          mode: "lines",
+          name: "Threshold",
+          hovertemplate: "Cycle: %{x}<br>Threshold: %{y:.4f}<extra></extra>"
+        },
+        {
+          x: hitX,
+          y: hitY,
+          mode: "markers",
+          name: "Hit (p ≥ T)",
+          hovertemplate: "Cycle: %{x}<br>Hit prob: %{y:.4f}<extra></extra>"
+        }
+      ];
+
+      const shapes = [];
+      if (summary.predicted_alert_cycle != null && summary.detection_cycle != null && Number(meta.k) > 1) {
+        shapes.push({
+          type: "rect",
+          x0: summary.predicted_alert_cycle,
+          x1: summary.detection_cycle,
+          y0: 0,
+          y1: 1,
+          yref: "paper",
+          fillcolor: "rgba(120,120,120,0.12)",
+          line: { width: 0 }
+        });
+      }
+      if (summary.predicted_alert_cycle != null) {
+        shapes.push({
+          type: "line",
+          x0: summary.predicted_alert_cycle,
+          x1: summary.predicted_alert_cycle,
+          y0: 0,
+          y1: 1,
+          yref: "paper",
+          line: { dash: "dash", width: 2 }
+        });
+      }
+      if (summary.detection_cycle != null) {
+        shapes.push({
+          type: "line",
+          x0: summary.detection_cycle,
+          x1: summary.detection_cycle,
+          y0: 0,
+          y1: 1,
+          yref: "paper",
+          line: { dash: "dot", width: 2 }
+        });
+      }
+
+      Plotly.newPlot(
+        container,
+        traces,
+        buildPlotLayout(container, `Fault Triggering - Engine ${interactiveData.engine_id}`, { title: "Probability", range: [0, 1] }, shapes),
+        { responsive: true, displaylogo: false }
+      ).then(() => finalizePlot(container));
+    }
+
+    function buildDetails(meta, summary, engine){
+      const rows = [
+        ["Dataset", meta.dataset],
+        ["Best normalization", meta.best_norm],
+        ["Best model", meta.best_model],
+        ["Validation source", meta.source],
+        ["Probability threshold T", meta.threshold],
+        ["Persistence K", meta.k],
+        ["Smoothing window", meta.smooth_w],
+        ["RUL threshold", meta.rul_threshold],
+        ["Max cycle", summary.max_cycle],
+        ["Tolerance cycles", summary.tol_cycles]
+      ];
+      detailTable.innerHTML = rows.map(([k,v]) => `
+        <tr>
+          <th>${k}</th>
+          <td class="${typeof v === 'number' ? 'mono' : ''}">${formatVal(v)}</td>
+        </tr>
+      `).join("");
+    }
+
+    function populateDatasets(){
+      const keys = getDatasetKeys();
+      datasetSelect.innerHTML = keys.map(k => `<option value="${k}">${k}</option>`).join("");
+    }
+
+    function populateEngines(preferredEngine = null){
+      const ds = getCurrentDataset();
+      const engineKeys = Object.keys(ds.engines || {}).sort((a,b) => Number(a) - Number(b));
+      engineSelect.innerHTML = engineKeys.map(k => `<option value="${k}">Engine ${k}</option>`).join("");
+      if (preferredEngine && engineKeys.includes(String(preferredEngine))) {
+        engineSelect.value = String(preferredEngine);
+      }
+    }
+
+    async function render(){
+      const token = ++renderToken;
+      const ds = getCurrentDataset();
+      const engine = getCurrentEngine();
+      const interactiveData = hasInteractiveFile(engine) ? await fetchInteractiveData(engine).catch(() => null) : null;
+      if (token !== renderToken) return;
+
+      const meta = mergeMeta(ds.meta, interactiveData);
+      const summary = mergeSummary(engine, interactiveData);
+      const trueCycleNum = Number(summary.true_alert_cycle);
+      const thresholdVal = Number.isFinite(trueCycleNum) ? Math.round(trueCycleNum * 0.10) : null;
+
+      engineTitle.textContent = `Engine ${getSelectedEngineKey()} — ${getSelectedDataset()}`;
+      
+
+      statusBadge.textContent = statusText(summary, engine);
+      statusBadge.className = `status ${statusClass(summary, engine)}`;
+
+      trueAlert.textContent = formatVal(summary.true_alert_cycle);
+      predAlert.textContent = formatVal(summary.predicted_alert_cycle);
+      thresholdCycle.textContent = formatVal(thresholdVal);
+      deltaCycle.textContent = formatVal(summary.delta_cycles);
+      withinTol.textContent = summary.within_tolerance === true ? "Yes" : (summary.within_tolerance === false ? "No" : "—");
+
+      probChip.textContent = `T=${formatVal(meta.threshold)} · K=${formatVal(meta.k)} · smooth_w=${formatVal(meta.smooth_w)}`;
+      triggerChip.textContent = `T=${formatVal(meta.threshold)} · K=${formatVal(meta.k)} · smooth_w=${formatVal(meta.smooth_w)}`;
+      modelChip.textContent = `${formatVal(meta.best_norm)} + ${formatVal(meta.best_model)} + ${formatVal(meta.source)}`;
+
+      if (interactiveData) {
+        renderProbabilityInteractive(probabilityPlot, ds.meta, interactiveData);
+        renderLabelInteractive(labelPlot, interactiveData);
+        renderTriggerInteractive(triggerPlot, ds.meta, interactiveData);
+      } else {
+        renderEmpty(probabilityPlot, "Interactive probability JSON was not found for this engine.");
+        renderEmpty(labelPlot, "Interactive label JSON was not found for this engine.");
+        renderEmpty(triggerPlot, "Interactive trigger JSON was not found for this engine.");
+      }
+
+      buildDetails(meta, summary, engine);
+    }
+
+    datasetSelect.addEventListener("change", async () => {
+      populateEngines();
+      await render();
+    });
+
+    engineSelect.addEventListener("change", render);
+
+    searchEngine.addEventListener("change", async () => {
+      const value = String(searchEngine.value || "");
+      const ds = getCurrentDataset();
+      if (ds.engines[value]) {
+        engineSelect.value = value;
+        await render();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      [probabilityPlot, labelPlot, triggerPlot].forEach(container => {
+        try { Plotly.Plots.resize(container); } catch (err) {}
+      });
+    });
+
+    async function init(){
+      manifest = await loadAllManifests();
+      populateDatasets();
+      populateEngines();
+      await render();
+    }
+
+    init();
+  </script>
+</body>
+</html>
