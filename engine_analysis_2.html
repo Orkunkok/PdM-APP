@@ -730,7 +730,7 @@
       deltaCycle.textContent = formatVal(summary.delta_cycles);
       withinTol.textContent = summary.within_tolerance === true ? "Yes" : (summary.within_tolerance === false ? "No" : "—");
 
-      probChip.textContent = `T=${formatVal(meta.threshold)} · K=${formatVal(meta.k)} · smooth_w=${formatVal(meta.smooth_w)}`;
+      probChip.textContent = `T=${formatVal(meta.threshold)} · smooth_w=${formatVal(meta.smooth_w)}`;
       triggerChip.textContent = `T=${formatVal(meta.threshold)} · K=${formatVal(meta.k)} · smooth_w=${formatVal(meta.smooth_w)}`;
       modelChip.textContent = `${formatVal(meta.best_norm)} + ${formatVal(meta.best_model)} + ${formatVal(meta.source)}`;
 
