@@ -81,37 +81,6 @@
         .missing-pred {
         background-color: #fcfcfc !important;
         }
-    
-        .top-actions {
-            display:flex;
-            align-items:center;
-            gap:14px;
-            flex-wrap:wrap;
-            margin: 10px 0 18px 0;
-        }
-        .engine-link {
-            display:inline-flex;
-            align-items:center;
-            gap:10px;
-            padding: 12px 18px;
-            border-radius: 999px;
-            background: #34495e;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 6px 18px rgba(52,73,94,0.18);
-            transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
-        }
-        .engine-link:hover {
-            background: #22313f;
-            transform: translateY(-1px);
-            box-shadow: 0 8px 22px rgba(34,49,63,0.24);
-        }
-        .engine-note {
-            color: #5f6b76;
-            font-size: 14px;
-        }
-
     </style>
 </head>
 
@@ -140,11 +109,6 @@
     <option value="comparison">Dataset Comparison</option>
     <option value="runtime">Runtime Analysis</option>
 </select>
-
-<div class="top-actions">
-    <a class="engine-link" href="engine_analysis_2.html">Engine Analysis</a>
-    <span class="engine-note">Open the interactive per-engine explorer for probability curves, label windows, and fault triggering plots.</span>
-</div>
 
 <div id="datasetInfo" class="info-card"></div>
 
@@ -5841,7 +5805,7 @@
 
 <div id="FD003-alert" class="section">
     <h2>FD003 - Alert Table</h2>
-        <table border="1" class="dataframe">
+    <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th>engine_id</th>
@@ -5863,11 +5827,11 @@
       <td>long_life</td>
       <td>259</td>
       <td>26</td>
-      <td>223.0</td>
+      <td>222</td>
       <td>229</td>
-      <td>-6.0</td>
+      <td>-7</td>
       <td>True</td>
-      <td>6.0</td>
+      <td>7</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -5876,11 +5840,11 @@
       <td>long_life</td>
       <td>253</td>
       <td>25</td>
-      <td>226.0</td>
+      <td>227</td>
       <td>223</td>
-      <td>3.0</td>
+      <td>4</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>4</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -5889,11 +5853,11 @@
       <td>long_life</td>
       <td>222</td>
       <td>22</td>
-      <td>195.0</td>
+      <td>194</td>
       <td>192</td>
-      <td>3.0</td>
+      <td>2</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>2</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -5902,11 +5866,11 @@
       <td>long_life</td>
       <td>272</td>
       <td>27</td>
-      <td>190.0</td>
+      <td>210</td>
       <td>242</td>
-      <td>-52.0</td>
+      <td>-32</td>
       <td>True</td>
-      <td>52.0</td>
+      <td>32</td>
       <td>far_early</td>
       <td>early</td>
     </tr>
@@ -5915,11 +5879,11 @@
       <td>long_life</td>
       <td>213</td>
       <td>21</td>
-      <td>170.0</td>
+      <td>173</td>
       <td>183</td>
-      <td>-13.0</td>
+      <td>-10</td>
       <td>True</td>
-      <td>13.0</td>
+      <td>10</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -5928,11 +5892,11 @@
       <td>long_life</td>
       <td>278</td>
       <td>28</td>
-      <td>234.0</td>
+      <td>228</td>
       <td>248</td>
-      <td>-14.0</td>
+      <td>-20</td>
       <td>True</td>
-      <td>14.0</td>
+      <td>20</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -5941,24 +5905,24 @@
       <td>long_life</td>
       <td>424</td>
       <td>42</td>
-      <td>NaN</td>
+      <td>383</td>
       <td>394</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>missing_pred</td>
-      <td>NA</td>
+      <td>-11</td>
+      <td>True</td>
+      <td>11</td>
+      <td>good_within_tol</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>8</td>
       <td>long_life</td>
       <td>267</td>
       <td>27</td>
-      <td>212.0</td>
+      <td>214</td>
       <td>237</td>
-      <td>-25.0</td>
+      <td>-23</td>
       <td>True</td>
-      <td>25.0</td>
+      <td>23</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -5967,11 +5931,11 @@
       <td>long_life</td>
       <td>406</td>
       <td>41</td>
-      <td>341.0</td>
+      <td>338</td>
       <td>376</td>
-      <td>-35.0</td>
+      <td>-38</td>
       <td>True</td>
-      <td>35.0</td>
+      <td>38</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -5980,24 +5944,24 @@
       <td>long_life</td>
       <td>481</td>
       <td>48</td>
-      <td>449.0</td>
+      <td>456</td>
       <td>451</td>
-      <td>-2.0</td>
+      <td>5</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
-      <td>early</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>11</td>
       <td>long_life</td>
       <td>197</td>
       <td>20</td>
-      <td>179.0</td>
+      <td>180</td>
       <td>167</td>
-      <td>12.0</td>
+      <td>13</td>
       <td>True</td>
-      <td>12.0</td>
+      <td>13</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6006,11 +5970,11 @@
       <td>long_life</td>
       <td>170</td>
       <td>17</td>
-      <td>148.0</td>
+      <td>148</td>
       <td>140</td>
-      <td>8.0</td>
+      <td>8</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>8</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6019,11 +5983,11 @@
       <td>long_life</td>
       <td>185</td>
       <td>18</td>
-      <td>143.0</td>
+      <td>149</td>
       <td>155</td>
-      <td>-12.0</td>
+      <td>-6</td>
       <td>True</td>
-      <td>12.0</td>
+      <td>6</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6032,24 +5996,24 @@
       <td>long_life</td>
       <td>207</td>
       <td>21</td>
-      <td>NaN</td>
+      <td>179</td>
       <td>177</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>missing_pred</td>
-      <td>NA</td>
+      <td>2</td>
+      <td>True</td>
+      <td>2</td>
+      <td>good_within_tol</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>15</td>
       <td>long_life</td>
       <td>202</td>
       <td>20</td>
-      <td>142.0</td>
+      <td>141</td>
       <td>172</td>
-      <td>-30.0</td>
+      <td>-31</td>
       <td>True</td>
-      <td>30.0</td>
+      <td>31</td>
       <td>far_early</td>
       <td>early</td>
     </tr>
@@ -6058,11 +6022,11 @@
       <td>long_life</td>
       <td>344</td>
       <td>34</td>
-      <td>303.0</td>
+      <td>299</td>
       <td>314</td>
-      <td>-11.0</td>
+      <td>-15</td>
       <td>True</td>
-      <td>11.0</td>
+      <td>15</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6071,24 +6035,24 @@
       <td>long_life</td>
       <td>312</td>
       <td>31</td>
-      <td>282.0</td>
+      <td>283</td>
       <td>282</td>
-      <td>0.0</td>
+      <td>1</td>
       <td>True</td>
-      <td>0.0</td>
+      <td>1</td>
       <td>good_within_tol</td>
-      <td>equal</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>18</td>
       <td>long_life</td>
       <td>447</td>
       <td>45</td>
-      <td>407.0</td>
+      <td>405</td>
       <td>417</td>
-      <td>-10.0</td>
+      <td>-12</td>
       <td>True</td>
-      <td>10.0</td>
+      <td>12</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6097,11 +6061,11 @@
       <td>long_life</td>
       <td>229</td>
       <td>23</td>
-      <td>198.0</td>
+      <td>192</td>
       <td>199</td>
-      <td>-1.0</td>
+      <td>-7</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>7</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6110,11 +6074,11 @@
       <td>long_life</td>
       <td>338</td>
       <td>34</td>
-      <td>294.0</td>
+      <td>296</td>
       <td>308</td>
-      <td>-14.0</td>
+      <td>-12</td>
       <td>True</td>
-      <td>14.0</td>
+      <td>12</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6123,11 +6087,11 @@
       <td>long_life</td>
       <td>220</td>
       <td>22</td>
-      <td>193.0</td>
+      <td>194</td>
       <td>190</td>
-      <td>3.0</td>
+      <td>4</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>4</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6136,11 +6100,11 @@
       <td>long_life</td>
       <td>192</td>
       <td>19</td>
-      <td>169.0</td>
+      <td>167</td>
       <td>162</td>
-      <td>7.0</td>
+      <td>5</td>
       <td>True</td>
-      <td>7.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6149,11 +6113,11 @@
       <td>long_life</td>
       <td>196</td>
       <td>20</td>
-      <td>173.0</td>
+      <td>168</td>
       <td>166</td>
-      <td>7.0</td>
+      <td>2</td>
       <td>True</td>
-      <td>7.0</td>
+      <td>2</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6162,11 +6126,11 @@
       <td>long_life</td>
       <td>494</td>
       <td>49</td>
-      <td>449.0</td>
+      <td>453</td>
       <td>464</td>
-      <td>-15.0</td>
+      <td>-11</td>
       <td>True</td>
-      <td>15.0</td>
+      <td>11</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6175,11 +6139,11 @@
       <td>long_life</td>
       <td>193</td>
       <td>19</td>
-      <td>166.0</td>
+      <td>164</td>
       <td>163</td>
-      <td>3.0</td>
+      <td>1</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>1</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6188,37 +6152,37 @@
       <td>long_life</td>
       <td>243</td>
       <td>24</td>
-      <td>213.0</td>
+      <td>225</td>
       <td>213</td>
-      <td>0.0</td>
+      <td>12</td>
       <td>True</td>
-      <td>0.0</td>
+      <td>12</td>
       <td>good_within_tol</td>
-      <td>equal</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>27</td>
       <td>long_life</td>
       <td>320</td>
       <td>32</td>
-      <td>289.0</td>
+      <td>292</td>
       <td>290</td>
-      <td>-1.0</td>
+      <td>2</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>2</td>
       <td>good_within_tol</td>
-      <td>early</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>28</td>
       <td>long_life</td>
       <td>200</td>
       <td>20</td>
-      <td>178.0</td>
+      <td>175</td>
       <td>170</td>
-      <td>8.0</td>
+      <td>5</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6227,11 +6191,11 @@
       <td>long_life</td>
       <td>223</td>
       <td>22</td>
-      <td>186.0</td>
+      <td>184</td>
       <td>193</td>
-      <td>-7.0</td>
+      <td>-9</td>
       <td>True</td>
-      <td>7.0</td>
+      <td>9</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6240,11 +6204,11 @@
       <td>long_life</td>
       <td>218</td>
       <td>22</td>
-      <td>184.0</td>
+      <td>182</td>
       <td>188</td>
-      <td>-4.0</td>
+      <td>-6</td>
       <td>True</td>
-      <td>4.0</td>
+      <td>6</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6253,11 +6217,11 @@
       <td>long_life</td>
       <td>183</td>
       <td>18</td>
-      <td>147.0</td>
+      <td>138</td>
       <td>153</td>
-      <td>-6.0</td>
+      <td>-15</td>
       <td>True</td>
-      <td>6.0</td>
+      <td>15</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6266,24 +6230,24 @@
       <td>long_life</td>
       <td>189</td>
       <td>19</td>
-      <td>161.0</td>
+      <td>158</td>
       <td>159</td>
-      <td>2.0</td>
+      <td>-1</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>1</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>33</td>
       <td>long_life</td>
       <td>231</td>
       <td>23</td>
-      <td>210.0</td>
+      <td>206</td>
       <td>201</td>
-      <td>9.0</td>
+      <td>5</td>
       <td>True</td>
-      <td>9.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6292,11 +6256,11 @@
       <td>long_life</td>
       <td>459</td>
       <td>46</td>
-      <td>411.0</td>
+      <td>409</td>
       <td>429</td>
-      <td>-18.0</td>
+      <td>-20</td>
       <td>True</td>
-      <td>18.0</td>
+      <td>20</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6305,11 +6269,11 @@
       <td>long_life</td>
       <td>231</td>
       <td>23</td>
-      <td>204.0</td>
+      <td>203</td>
       <td>201</td>
-      <td>3.0</td>
+      <td>2</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>2</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6318,11 +6282,11 @@
       <td>long_life</td>
       <td>324</td>
       <td>32</td>
-      <td>291.0</td>
+      <td>286</td>
       <td>294</td>
-      <td>-3.0</td>
+      <td>-8</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>8</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6331,11 +6295,11 @@
       <td>long_life</td>
       <td>324</td>
       <td>32</td>
-      <td>288.0</td>
+      <td>289</td>
       <td>294</td>
-      <td>-6.0</td>
+      <td>-5</td>
       <td>True</td>
-      <td>6.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6344,11 +6308,11 @@
       <td>long_life</td>
       <td>201</td>
       <td>20</td>
-      <td>178.0</td>
+      <td>177</td>
       <td>171</td>
-      <td>7.0</td>
+      <td>6</td>
       <td>True</td>
-      <td>7.0</td>
+      <td>6</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6357,50 +6321,50 @@
       <td>long_life</td>
       <td>288</td>
       <td>29</td>
-      <td>266.0</td>
       <td>258</td>
-      <td>8.0</td>
+      <td>258</td>
+      <td>0</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>0</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>equal</td>
     </tr>
     <tr>
       <td>40</td>
       <td>long_life</td>
       <td>188</td>
       <td>19</td>
-      <td>150.0</td>
+      <td>161</td>
       <td>158</td>
-      <td>-8.0</td>
+      <td>3</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
-      <td>early</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>41</td>
       <td>long_life</td>
       <td>295</td>
       <td>30</td>
-      <td>266.0</td>
+      <td>256</td>
       <td>265</td>
-      <td>1.0</td>
+      <td>-9</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>9</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>42</td>
       <td>long_life</td>
       <td>193</td>
       <td>19</td>
-      <td>176.0</td>
+      <td>177</td>
       <td>163</td>
-      <td>13.0</td>
+      <td>14</td>
       <td>True</td>
-      <td>13.0</td>
+      <td>14</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6409,24 +6373,24 @@
       <td>long_life</td>
       <td>321</td>
       <td>32</td>
-      <td>295.0</td>
+      <td>288</td>
       <td>291</td>
-      <td>4.0</td>
+      <td>-3</td>
       <td>True</td>
-      <td>4.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>44</td>
       <td>long_life</td>
       <td>180</td>
       <td>18</td>
-      <td>139.0</td>
+      <td>135</td>
       <td>150</td>
-      <td>-11.0</td>
+      <td>-15</td>
       <td>True</td>
-      <td>11.0</td>
+      <td>15</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6435,11 +6399,11 @@
       <td>long_life</td>
       <td>205</td>
       <td>20</td>
-      <td>188.0</td>
+      <td>184</td>
       <td>175</td>
-      <td>13.0</td>
+      <td>9</td>
       <td>True</td>
-      <td>13.0</td>
+      <td>9</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6448,11 +6412,11 @@
       <td>long_life</td>
       <td>204</td>
       <td>20</td>
-      <td>184.0</td>
+      <td>183</td>
       <td>174</td>
-      <td>10.0</td>
+      <td>9</td>
       <td>True</td>
-      <td>10.0</td>
+      <td>9</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6461,11 +6425,11 @@
       <td>long_life</td>
       <td>269</td>
       <td>27</td>
-      <td>220.0</td>
+      <td>222</td>
       <td>239</td>
-      <td>-19.0</td>
+      <td>-17</td>
       <td>True</td>
-      <td>19.0</td>
+      <td>17</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6474,11 +6438,11 @@
       <td>long_life</td>
       <td>174</td>
       <td>17</td>
-      <td>139.0</td>
+      <td>137</td>
       <td>144</td>
-      <td>-5.0</td>
+      <td>-7</td>
       <td>True</td>
-      <td>5.0</td>
+      <td>7</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6487,11 +6451,11 @@
       <td>long_life</td>
       <td>256</td>
       <td>26</td>
-      <td>224.0</td>
+      <td>224</td>
       <td>226</td>
-      <td>-2.0</td>
+      <td>-2</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>2</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6500,11 +6464,11 @@
       <td>long_life</td>
       <td>161</td>
       <td>16</td>
-      <td>146.0</td>
+      <td>145</td>
       <td>131</td>
-      <td>15.0</td>
+      <td>14</td>
       <td>True</td>
-      <td>15.0</td>
+      <td>14</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6513,24 +6477,24 @@
       <td>long_life</td>
       <td>190</td>
       <td>19</td>
-      <td>160.0</td>
+      <td>163</td>
       <td>160</td>
-      <td>0.0</td>
+      <td>3</td>
       <td>True</td>
-      <td>0.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
-      <td>equal</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>52</td>
       <td>long_life</td>
       <td>222</td>
       <td>22</td>
-      <td>191.0</td>
+      <td>191</td>
       <td>192</td>
-      <td>-1.0</td>
+      <td>-1</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>1</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6539,24 +6503,24 @@
       <td>long_life</td>
       <td>164</td>
       <td>16</td>
-      <td>NaN</td>
+      <td>147</td>
       <td>134</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>missing_pred</td>
-      <td>NA</td>
+      <td>13</td>
+      <td>True</td>
+      <td>13</td>
+      <td>good_within_tol</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>54</td>
       <td>long_life</td>
       <td>194</td>
       <td>19</td>
-      <td>155.0</td>
+      <td>154</td>
       <td>164</td>
-      <td>-9.0</td>
+      <td>-10</td>
       <td>True</td>
-      <td>9.0</td>
+      <td>10</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6565,11 +6529,11 @@
       <td>long_life</td>
       <td>525</td>
       <td>52</td>
-      <td>468.0</td>
+      <td>475</td>
       <td>495</td>
-      <td>-27.0</td>
+      <td>-20</td>
       <td>True</td>
-      <td>27.0</td>
+      <td>20</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6578,11 +6542,11 @@
       <td>long_life</td>
       <td>195</td>
       <td>20</td>
-      <td>146.0</td>
+      <td>159</td>
       <td>165</td>
-      <td>-19.0</td>
+      <td>-6</td>
       <td>True</td>
-      <td>19.0</td>
+      <td>6</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6591,24 +6555,24 @@
       <td>long_life</td>
       <td>215</td>
       <td>22</td>
-      <td>187.0</td>
       <td>185</td>
-      <td>2.0</td>
+      <td>185</td>
+      <td>0</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>0</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>equal</td>
     </tr>
     <tr>
       <td>58</td>
       <td>long_life</td>
       <td>178</td>
       <td>18</td>
-      <td>150.0</td>
+      <td>151</td>
       <td>148</td>
-      <td>2.0</td>
+      <td>3</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6617,11 +6581,11 @@
       <td>long_life</td>
       <td>299</td>
       <td>30</td>
-      <td>254.0</td>
+      <td>254</td>
       <td>269</td>
-      <td>-15.0</td>
+      <td>-15</td>
       <td>True</td>
-      <td>15.0</td>
+      <td>15</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6630,11 +6594,11 @@
       <td>long_life</td>
       <td>190</td>
       <td>19</td>
-      <td>170.0</td>
+      <td>172</td>
       <td>160</td>
-      <td>10.0</td>
+      <td>12</td>
       <td>True</td>
-      <td>10.0</td>
+      <td>12</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6643,11 +6607,11 @@
       <td>long_life</td>
       <td>199</td>
       <td>20</td>
-      <td>158.0</td>
+      <td>166</td>
       <td>169</td>
-      <td>-11.0</td>
+      <td>-3</td>
       <td>True</td>
-      <td>11.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6656,11 +6620,11 @@
       <td>long_life</td>
       <td>246</td>
       <td>25</td>
-      <td>224.0</td>
+      <td>221</td>
       <td>216</td>
-      <td>8.0</td>
+      <td>5</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6669,24 +6633,24 @@
       <td>long_life</td>
       <td>231</td>
       <td>23</td>
-      <td>204.0</td>
       <td>201</td>
-      <td>3.0</td>
+      <td>201</td>
+      <td>0</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>0</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>equal</td>
     </tr>
     <tr>
       <td>64</td>
       <td>long_life</td>
       <td>195</td>
       <td>20</td>
-      <td>162.0</td>
+      <td>162</td>
       <td>165</td>
-      <td>-3.0</td>
+      <td>-3</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6695,24 +6659,24 @@
       <td>long_life</td>
       <td>234</td>
       <td>23</td>
-      <td>NaN</td>
+      <td>207</td>
       <td>204</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>missing_pred</td>
-      <td>NA</td>
+      <td>3</td>
+      <td>True</td>
+      <td>3</td>
+      <td>good_within_tol</td>
+      <td>late</td>
     </tr>
     <tr>
       <td>66</td>
       <td>long_life</td>
       <td>165</td>
       <td>16</td>
-      <td>144.0</td>
+      <td>145</td>
       <td>135</td>
-      <td>9.0</td>
+      <td>10</td>
       <td>True</td>
-      <td>9.0</td>
+      <td>10</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6721,11 +6685,11 @@
       <td>long_life</td>
       <td>263</td>
       <td>26</td>
-      <td>214.0</td>
+      <td>214</td>
       <td>233</td>
-      <td>-19.0</td>
+      <td>-19</td>
       <td>True</td>
-      <td>19.0</td>
+      <td>19</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6734,37 +6698,37 @@
       <td>long_life</td>
       <td>201</td>
       <td>20</td>
-      <td>174.0</td>
+      <td>166</td>
       <td>171</td>
-      <td>3.0</td>
+      <td>-5</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>69</td>
       <td>long_life</td>
       <td>170</td>
       <td>17</td>
-      <td>143.0</td>
+      <td>137</td>
       <td>140</td>
-      <td>3.0</td>
+      <td>-3</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>70</td>
       <td>long_life</td>
       <td>172</td>
       <td>17</td>
-      <td>154.0</td>
+      <td>156</td>
       <td>142</td>
-      <td>12.0</td>
+      <td>14</td>
       <td>True</td>
-      <td>12.0</td>
+      <td>14</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6773,11 +6737,11 @@
       <td>long_life</td>
       <td>409</td>
       <td>41</td>
-      <td>368.0</td>
+      <td>374</td>
       <td>379</td>
-      <td>-11.0</td>
+      <td>-5</td>
       <td>True</td>
-      <td>11.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6786,11 +6750,11 @@
       <td>long_life</td>
       <td>232</td>
       <td>23</td>
-      <td>205.0</td>
+      <td>206</td>
       <td>202</td>
-      <td>3.0</td>
+      <td>4</td>
       <td>True</td>
-      <td>3.0</td>
+      <td>4</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6799,11 +6763,11 @@
       <td>long_life</td>
       <td>215</td>
       <td>22</td>
-      <td>198.0</td>
+      <td>196</td>
       <td>185</td>
-      <td>13.0</td>
+      <td>11</td>
       <td>True</td>
-      <td>13.0</td>
+      <td>11</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6812,12 +6776,12 @@
       <td>long_life</td>
       <td>193</td>
       <td>19</td>
-      <td>142.0</td>
+      <td>158</td>
       <td>163</td>
-      <td>-21.0</td>
+      <td>-5</td>
       <td>True</td>
-      <td>21.0</td>
-      <td>far_early</td>
+      <td>5</td>
+      <td>good_within_tol</td>
       <td>early</td>
     </tr>
     <tr>
@@ -6825,11 +6789,11 @@
       <td>long_life</td>
       <td>259</td>
       <td>26</td>
-      <td>236.0</td>
+      <td>236</td>
       <td>229</td>
-      <td>7.0</td>
+      <td>7</td>
       <td>True</td>
-      <td>7.0</td>
+      <td>7</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6838,24 +6802,24 @@
       <td>long_life</td>
       <td>153</td>
       <td>15</td>
-      <td>129.0</td>
+      <td>107</td>
       <td>123</td>
-      <td>6.0</td>
+      <td>-16</td>
       <td>True</td>
-      <td>6.0</td>
-      <td>good_within_tol</td>
-      <td>late</td>
+      <td>16</td>
+      <td>far_early</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>77</td>
       <td>long_life</td>
       <td>255</td>
       <td>26</td>
-      <td>219.0</td>
+      <td>217</td>
       <td>225</td>
-      <td>-6.0</td>
+      <td>-8</td>
       <td>True</td>
-      <td>6.0</td>
+      <td>8</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6864,11 +6828,11 @@
       <td>long_life</td>
       <td>221</td>
       <td>22</td>
-      <td>187.0</td>
+      <td>186</td>
       <td>191</td>
-      <td>-4.0</td>
+      <td>-5</td>
       <td>True</td>
-      <td>4.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6877,11 +6841,11 @@
       <td>long_life</td>
       <td>166</td>
       <td>17</td>
-      <td>151.0</td>
+      <td>147</td>
       <td>136</td>
-      <td>15.0</td>
+      <td>11</td>
       <td>True</td>
-      <td>15.0</td>
+      <td>11</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6890,11 +6854,11 @@
       <td>long_life</td>
       <td>147</td>
       <td>15</td>
-      <td>118.0</td>
+      <td>127</td>
       <td>117</td>
-      <td>1.0</td>
+      <td>10</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>10</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6903,11 +6867,11 @@
       <td>long_life</td>
       <td>347</td>
       <td>35</td>
-      <td>309.0</td>
+      <td>309</td>
       <td>317</td>
-      <td>-8.0</td>
+      <td>-8</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>8</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6916,24 +6880,24 @@
       <td>long_life</td>
       <td>285</td>
       <td>28</td>
-      <td>NaN</td>
+      <td>246</td>
       <td>255</td>
-      <td>NaN</td>
-      <td>False</td>
-      <td>NaN</td>
-      <td>missing_pred</td>
-      <td>NA</td>
+      <td>-9</td>
+      <td>True</td>
+      <td>9</td>
+      <td>good_within_tol</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>83</td>
       <td>long_life</td>
       <td>181</td>
       <td>18</td>
-      <td>145.0</td>
+      <td>149</td>
       <td>151</td>
-      <td>-6.0</td>
+      <td>-2</td>
       <td>True</td>
-      <td>6.0</td>
+      <td>2</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6942,11 +6906,11 @@
       <td>long_life</td>
       <td>226</td>
       <td>23</td>
-      <td>201.0</td>
+      <td>203</td>
       <td>196</td>
-      <td>5.0</td>
+      <td>7</td>
       <td>True</td>
-      <td>5.0</td>
+      <td>7</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -6955,11 +6919,11 @@
       <td>long_life</td>
       <td>266</td>
       <td>27</td>
-      <td>234.0</td>
+      <td>233</td>
       <td>236</td>
-      <td>-2.0</td>
+      <td>-3</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6968,11 +6932,11 @@
       <td>long_life</td>
       <td>341</td>
       <td>34</td>
-      <td>282.0</td>
+      <td>289</td>
       <td>311</td>
-      <td>-29.0</td>
+      <td>-22</td>
       <td>True</td>
-      <td>29.0</td>
+      <td>22</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6981,11 +6945,11 @@
       <td>long_life</td>
       <td>172</td>
       <td>17</td>
-      <td>141.0</td>
+      <td>141</td>
       <td>142</td>
-      <td>-1.0</td>
+      <td>-1</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>1</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -6994,11 +6958,11 @@
       <td>long_life</td>
       <td>322</td>
       <td>32</td>
-      <td>290.0</td>
+      <td>285</td>
       <td>292</td>
-      <td>-2.0</td>
+      <td>-7</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>7</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -7007,11 +6971,11 @@
       <td>long_life</td>
       <td>207</td>
       <td>21</td>
-      <td>189.0</td>
+      <td>188</td>
       <td>177</td>
-      <td>12.0</td>
+      <td>11</td>
       <td>True</td>
-      <td>12.0</td>
+      <td>11</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -7020,11 +6984,11 @@
       <td>long_life</td>
       <td>181</td>
       <td>18</td>
-      <td>157.0</td>
+      <td>155</td>
       <td>151</td>
-      <td>6.0</td>
+      <td>4</td>
       <td>True</td>
-      <td>6.0</td>
+      <td>4</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -7033,11 +6997,11 @@
       <td>long_life</td>
       <td>156</td>
       <td>16</td>
-      <td>139.0</td>
+      <td>140</td>
       <td>126</td>
-      <td>13.0</td>
+      <td>14</td>
       <td>True</td>
-      <td>13.0</td>
+      <td>14</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -7046,24 +7010,24 @@
       <td>long_life</td>
       <td>158</td>
       <td>16</td>
-      <td>130.0</td>
+      <td>120</td>
       <td>128</td>
-      <td>2.0</td>
+      <td>-8</td>
       <td>True</td>
-      <td>2.0</td>
+      <td>8</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>early</td>
     </tr>
     <tr>
       <td>93</td>
       <td>long_life</td>
       <td>171</td>
       <td>17</td>
-      <td>149.0</td>
+      <td>148</td>
       <td>141</td>
-      <td>8.0</td>
+      <td>7</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>7</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
@@ -7072,11 +7036,11 @@
       <td>long_life</td>
       <td>392</td>
       <td>39</td>
-      <td>344.0</td>
+      <td>326</td>
       <td>362</td>
-      <td>-18.0</td>
+      <td>-36</td>
       <td>True</td>
-      <td>18.0</td>
+      <td>36</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -7085,11 +7049,11 @@
       <td>long_life</td>
       <td>166</td>
       <td>17</td>
-      <td>131.0</td>
+      <td>131</td>
       <td>136</td>
-      <td>-5.0</td>
+      <td>-5</td>
       <td>True</td>
-      <td>5.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -7098,11 +7062,11 @@
       <td>long_life</td>
       <td>491</td>
       <td>49</td>
-      <td>423.0</td>
+      <td>437</td>
       <td>461</td>
-      <td>-38.0</td>
+      <td>-24</td>
       <td>True</td>
-      <td>38.0</td>
+      <td>24</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -7111,24 +7075,24 @@
       <td>long_life</td>
       <td>275</td>
       <td>28</td>
-      <td>246.0</td>
       <td>245</td>
-      <td>1.0</td>
+      <td>245</td>
+      <td>0</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>0</td>
       <td>good_within_tol</td>
-      <td>late</td>
+      <td>equal</td>
     </tr>
     <tr>
       <td>98</td>
       <td>long_life</td>
       <td>307</td>
       <td>31</td>
-      <td>269.0</td>
+      <td>271</td>
       <td>277</td>
-      <td>-8.0</td>
+      <td>-6</td>
       <td>True</td>
-      <td>8.0</td>
+      <td>6</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -7137,11 +7101,11 @@
       <td>long_life</td>
       <td>145</td>
       <td>14</td>
-      <td>114.0</td>
+      <td>112</td>
       <td>115</td>
-      <td>-1.0</td>
+      <td>-3</td>
       <td>True</td>
-      <td>1.0</td>
+      <td>3</td>
       <td>good_within_tol</td>
       <td>early</td>
     </tr>
@@ -7150,17 +7114,19 @@
       <td>long_life</td>
       <td>152</td>
       <td>15</td>
-      <td>126.0</td>
+      <td>127</td>
       <td>122</td>
-      <td>4.0</td>
+      <td>5</td>
       <td>True</td>
-      <td>4.0</td>
+      <td>5</td>
       <td>good_within_tol</td>
       <td>late</td>
     </tr>
   </tbody>
-</table>
-    <table border="1" class="dataframe">
+</table>   
+
+
+<table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th>timing_bucket</th>
@@ -7171,21 +7137,21 @@
   <tbody>
     <tr>
       <td>good_within_tol</td>
-      <td>92</td>
-      <td>92.0</td>
-    </tr>
-    <tr>
-      <td>missing_pred</td>
-      <td>5</td>
-      <td>5.0</td>
+      <td>97</td>
+      <td>97.0</td>
     </tr>
     <tr>
       <td>far_early</td>
       <td>3</td>
       <td>3.0</td>
     </tr>
+    <tr>
+      <td>far_late</td>
+      <td>0</td>
+      <td>0.0</td>
+    </tr>
   </tbody>
-</table>
+</table>    
 </div>
 
 <div id="FD004-perf" class="section">
