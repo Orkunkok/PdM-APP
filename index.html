@@ -81,6 +81,37 @@
         .missing-pred {
         background-color: #fcfcfc !important;
         }
+    
+        .top-actions {
+            display:flex;
+            align-items:center;
+            gap:14px;
+            flex-wrap:wrap;
+            margin: 10px 0 18px 0;
+        }
+        .engine-link {
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding: 12px 18px;
+            border-radius: 999px;
+            background: #34495e;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(52,73,94,0.18);
+            transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+        }
+        .engine-link:hover {
+            background: #22313f;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 22px rgba(34,49,63,0.24);
+        }
+        .engine-note {
+            color: #5f6b76;
+            font-size: 14px;
+        }
+
     </style>
 </head>
 
@@ -109,6 +140,11 @@
     <option value="comparison">Dataset Comparison</option>
     <option value="runtime">Runtime Analysis</option>
 </select>
+
+<div class="top-actions">
+    <a class="engine-link" href="engine_analysis.html">Engine Analysis</a>
+    <span class="engine-note">Open the interactive per-engine explorer for probability curves, label windows, and fault triggering plots.</span>
+</div>
 
 <div id="datasetInfo" class="info-card"></div>
 
@@ -5805,7 +5841,7 @@
 
 <div id="FD003-alert" class="section">
     <h2>FD003 - Alert Table</h2>
-    <table border="1" class="dataframe">
+<table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
       <th>engine_id</th>
