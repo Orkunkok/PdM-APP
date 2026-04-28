@@ -11402,9 +11402,9 @@ function updateView() {
             <h4>NASA CMAPSS Dataset Details</h4>
             <ul>
                 <li>Consists of multiple multivariate time series</li>
-                <li>Originally divided into test/train, however later we randomly divided ourselves again</li>
+                <li>Originally divided into test/train; however, later we randomly divided ourselves again</li>
                 <li>Each time series = one engine</li>
-                <li>Engines start at normal condition run until failure</li>
+                <li>Engines start at normal condition and run until failure</li>
                 <li>RUL provided for test</li>
             </ul>
             <h4>Structure</h4>
@@ -11516,12 +11516,12 @@ window.onload = function() {
                 datasets: [
                     {
                         label: 'MAE',
-                        data: [10.68, 8.98, 8.920, 10.96, 8.29],
+                        data: [10.68, 8.98, 8.920, 10.96, 6.68],
                         backgroundColor: 'rgba(54, 162, 235, 0.6)'
                     },
                     {
                         label: 'Within Tolerance (%)',
-                        data: [0.88, 0.926, 0.97, 0.943, 0.709],
+                        data: [0.88, 0.926, 0.97, 0.943, 0.80],
                         backgroundColor: 'rgba(75, 192, 192, 0.6)'
                     }
                 ]
