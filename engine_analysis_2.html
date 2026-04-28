@@ -313,7 +313,7 @@
     }
 
     function normalizeInteractiveManifest(datasetName, data, baseDir){
-      const dsName = (data.meta && data.meta.dataset) || datasetName;
+      const dsName = datasetName;
       const engines = {};
       for (const [engineId, engine] of Object.entries(data.engines || {})) {
         engines[String(engineId)] = {
