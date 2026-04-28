@@ -175,7 +175,7 @@
           <div class="metric-card">
             <div class="metric-label">10% Threshold</div>
             <div class="metric-value mono" id="thresholdCycle">—</div>
-            <div class="metric-note">10% of true alert cycle</div>
+            <div class="metric-note">10% of total lifetime</div>
           </div>
           <div class="metric-card">
             <div class="metric-label">Delta</div>
@@ -716,8 +716,7 @@
 
       const meta = mergeMeta(ds.meta, interactiveData);
       const summary = mergeSummary(engine, interactiveData);
-      const trueCycleNum = Number(summary.true_alert_cycle);
-      const thresholdVal = Number.isFinite(trueCycleNum) ? Math.round(trueCycleNum * 0.10) : null;
+      const thresholdVal = summary.tol_cycles ?? null;
 
       engineTitle.textContent = `Engine ${getSelectedEngineKey()} — ${getSelectedDataset()}`;
       
